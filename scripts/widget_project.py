@@ -1,5 +1,5 @@
 from pathlib import Path
-import hashlib,json,plistlib
+import hashlib,json,plistlib,os
 R=Path.cwd();M=json.loads((R/'module.json').read_text());P=R/'build/Widget.xcodeproj';P.mkdir(exist_ok=True);o={}
 def add(n,isa,**kw):
  k=hashlib.sha1(n.encode()).hexdigest()[:24].upper();o[k]=dict(isa=isa,**kw);return k
@@ -17,7 +17,8 @@ sources=add('sources','PBXSourcesBuildPhase',buildActionMask=2147483647,files=bu
 frameworks=add('frameworks','PBXFrameworksBuildPhase',buildActionMask=2147483647,files=[],runOnlyForDeploymentPostprocessing=0)
 info=R/'build/WidgetInfo.plist'
 with info.open('wb') as f:plistlib.dump(dict(CFBundleExecutable='$(EXECUTABLE_NAME)',CFBundleIdentifier='$(PRODUCT_BUNDLE_IDENTIFIER)',CFBundleName='Cyan GitHub',CFBundlePackageType='XPC!',CFBundleShortVersionString='0.1.0',CFBundleVersion='1',NSExtension=dict(NSExtensionPointIdentifier='com.apple.widgetkit-extension')),f)
-settings=dict(SDKROOT='macosx',MACOSX_DEPLOYMENT_TARGET='14.0',SWIFT_VERSION='5.0',PRODUCT_BUNDLE_IDENTIFIER=M['bundleID']+'.widgets',PRODUCT_NAME='CyanGitHubWidgets',INFOPLIST_FILE=str(info),APPLICATION_EXTENSION_API_ONLY='YES',SWIFT_OPTIMIZATION_LEVEL='-O',SKIP_INSTALL='YES',SUPPORTED_PLATFORMS='macosx',CODE_SIGN_ENTITLEMENTS=str(R/'Widget/Widget.entitlements'))
+settings=dict(SDKROOT='macosx',MACOSX_DEPLOYMENT_TARGET='14.0',SWIFT_VERSION='5.0',PRODUCT_BUNDLE_IDENTIFIER=os.environ.get('CYAN_WIDGET_HOST_ID',M['bundleID'])+'.widgets',PRODUCT_NAME='CyanGitHubWidgets',INFOPLIST_FILE=str(info),APPLICATION_EXTENSION_API_ONLY='YES',SWIFT_OPTIMIZATION_LEVEL='-O',SKIP_INSTALL='YES',SUPPORTED_PLATFORMS='macosx',CODE_SIGN_ENTITLEMENTS=str(R/'Widget/Widget.entitlements'))
+if os.environ.get('CYAN_WIDGET_HOST_ID'):settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS']='GROVE_WIDGET_SUPPORT'
 config=add('config','XCBuildConfiguration',buildSettings=settings,name='Release');configs=add('configs','XCConfigurationList',buildConfigurations=[config],defaultConfigurationIsVisible=0,defaultConfigurationName='Release')
 target=add('target','PBXNativeTarget',buildConfigurationList=configs,buildPhases=[sources,frameworks],buildRules=[],dependencies=[],name='CyanGitHubWidgets',productName='CyanGitHubWidgets',productReference=product,productType='com.apple.product-type.app-extension')
 proj=add('project','PBXProject',attributes={'LastUpgradeCheck':'2700'},buildConfigurationList=configs,compatibilityVersion='Xcode 14.0',developmentRegion='en',knownRegions=['en','Base'],mainGroup=group,projectDirPath='',projectRoot='',targets=[target])

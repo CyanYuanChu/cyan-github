@@ -43,7 +43,7 @@ struct NativeContributionView: View {
     var body: some View {
         content
             .containerBackground(p.background, for: .widget)
-            .widgetURL(URL(string: "cyan-github://overview"))
+            .widgetURL(widgetTargetURL)
     }
     // The host preview and actual extension render the same content.
     var content: some View {
@@ -146,4 +146,12 @@ struct NativeContributionView: View {
             Spacer(minLength: 0)
         }
     }
+}
+
+private var widgetTargetURL: URL? {
+    #if GROVE_WIDGET_SUPPORT
+    return URL(string: "cyangrove-modules://cyan-github")
+    #else
+    return URL(string: "cyan-github://overview")
+    #endif
 }

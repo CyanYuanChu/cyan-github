@@ -8,19 +8,21 @@ import WidgetKit
     @Published var notice: String?
     @Published var selected = "overview"
     let startup = StartupManager()
-    @Published var login: String { didSet { UserDefaults.standard.set(login, forKey: "login") } }
-    @Published var dark: Bool { didSet { UserDefaults.standard.set(dark, forKey: "dark") } }
+    @Published var login: String { didSet { FeaturePreferences.shared.set(login, forKey: "login") } }
+    @Published var dark: Bool { didSet { FeaturePreferences.shared.set(dark, forKey: "dark") } }
     @Published var demo = false
     var palette: GrovePalette { GrovePalette(dark: dark) }
     var timer: Timer?
     private var generation = 0
     init() {
-        let defaults = UserDefaults.standard
+        let defaults = FeaturePreferences.shared
         login = defaults.string(forKey: "login") ?? BuildConfig.defaultLogin
         dark = defaults.bool(forKey: "dark")
         if let cached = GroveCache.load(login) { snapshot = cached }
     }
+    func stop() { timer?.invalidate(); timer = nil; generation += 1; loading = false }
     func start() {
+        guard timer == nil else { return }
         
         Task { await refresh() }
         timer = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { [weak self] _ in Task { @MainActor in await self?.refresh() } }

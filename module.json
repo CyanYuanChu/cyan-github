@@ -1,13 +1,15 @@
 {
   "id": "cyan-github",
   "name": "Cyan GitHub",
-  "version": "0.1.0-preview.2",
+  "version": "0.2.0-preview.1",
   "bundleID": "io.github.cyanyuanchu.cyan-github",
-  "protocolVersion": 1,
+  "protocolVersion": 2,
   "minMacOS": "14.0",
   "architecture": "arm64",
   "repository": "CyanYuanChu/cyan-github",
   "appName": "Cyan GitHub.app",
   "icon": "arrow.triangle.branch",
-  "description": "GitHub 足迹与桌面组件"
+  "description": "GitHub 足迹与桌面组件",
+  "moduleName": "cyan-github.groveplugin",
+  "pluginBundleID": "io.github.cyanyuanchu.cyan-github.feature"
 }

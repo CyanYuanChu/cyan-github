@@ -5,9 +5,10 @@ struct GroveRootView: View {
     @ObservedObject var store: GroveStore
     var palette: GrovePalette { store.palette }
     var exportMode = false
+    var embedded = false
     var body: some View {
         HStack(spacing: 0) {
-            sidebar
+            if !embedded { sidebar }
             Group {
                 if exportMode { mainContent } else { ScrollView { mainContent } }
             }.background(palette.background)
@@ -16,10 +17,11 @@ struct GroveRootView: View {
         .foregroundStyle(palette.text)
         .font(.system(size: 13))
         .preferredColorScheme(store.dark ? .dark : .light)
-        .frame(minWidth: 1080, minHeight: 740)
+        .frame(minWidth: embedded ? 0 : 1080, minHeight: embedded ? 0 : 740)
     }
     var mainContent: some View {
                 VStack(alignment: .leading, spacing: 24) {
+                    if embedded { HStack { nav("总览", icon: "leaf", id: "overview"); nav("最近提交", icon: "arrow.triangle.branch", id: "activity"); nav("桌面组件", icon: "rectangle.on.rectangle", id: "widgets"); nav("账户设置", icon: "person", id: "settings") } }
                     toolbar
                     if store.demo { banner("当前是演示数据，用于预览界面", icon: "sparkles", warning: false) }
                     if let error = store.error { banner(error + (store.snapshot.login.isEmpty ? "" : " 正在显示上次同步的数据。"), icon: "wifi.exclamationmark", warning: true) }
