@@ -1,0 +1,13 @@
+{
+  "id": "cyan-github",
+  "name": "Cyan GitHub",
+  "version": "0.1.0-preview.1",
+  "bundleID": "io.github.cyanyuanchu.cyan-github",
+  "protocolVersion": 1,
+  "minMacOS": "14.0",
+  "architecture": "arm64",
+  "repository": "CyanYuanChu/cyan-github",
+  "appName": "Cyan GitHub.app",
+  "icon": "arrow.triangle.branch",
+  "description": "GitHub 足迹与桌面组件"
+}
