@@ -1,7 +1,7 @@
 {
   "id": "cyan-github",
   "name": "Cyan GitHub",
-  "version": "0.1.0-preview.1",
+  "version": "0.1.0-preview.2",
   "bundleID": "io.github.cyanyuanchu.cyan-github",
   "protocolVersion": 1,
   "minMacOS": "14.0",
