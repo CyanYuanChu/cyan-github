@@ -7,7 +7,7 @@ import AppKit
               !CommandLine.arguments.contains("--no-widget-registration") else { return }
         let source=FeatureResources.bundle.bundleURL.appendingPathComponent("Contents/Resources/WidgetSupport/Cyan Grove GitHub Widgets.app")
         guard FileManager.default.fileExists(atPath:source.path) else{return}
-        let apps=FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Applications",isDirectory:true)
+        let apps=FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("CyanGroveHub/WidgetSupport",isDirectory:true)
         let target=apps.appendingPathComponent("Cyan Grove GitHub Widgets.app",isDirectory:true)
         let version=ModuleMetadata.value["version"] as! String
         let marker="Contents/Resources/feature-version.txt"
